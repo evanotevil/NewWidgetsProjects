@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:custom="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".AlbumDetailsActivity">
+
+    <com.the111mins.newwidgetsprojects.ui.widget.SquareImageView
+        android:id="@+id/image_art"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:src="@drawable/savages"
+        android:transitionName="art"/>
+
+    <View
+        android:id="@+id/image_details_protective_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/image_shadow"/>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:minHeight="50dp"
+        custom:navigationContentDescription="go back"
+        custom:navigationIcon="@drawable/ic_action_arrow_back"
+        custom:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+        custom:theme="@style/MyActionBar"/>
+
+    <LinearLayout
+        android:id="@+id/lyt_about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image_art"
+        android:elevation="-3dp"
+        android:orientation="vertical"
+        android:padding="13dp">
+
+        <TextView
+            android:id="@+id/album_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:transitionName="title"
+            tools:text="fjvrkivniokvnr"/>
+
+        <TextView
+            android:id="@+id/album_artist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="jcnfjsdncvdskljvnd"/>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycle_view_songs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lyt_about"
+        android:scrollbars="vertical"/>
+
+</RelativeLayout>

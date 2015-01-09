@@ -1,40 +1,36 @@
 package com.the111mins.newwidgetsprojects.ui.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.the111mins.newwidgetsprojects.R;
-
 /**
  * Created by klimenko on 18.12.14.
  */
 public class RecycleSongsAdapter extends RecyclerView.Adapter<RecycleSongsAdapter.SongViewHolder> {
 
-    private final Context mContext;
     private final String[] mSongs;
 
-    public RecycleSongsAdapter(Context context, String[] songsArray) {
-        this.mContext = context;
+    public RecycleSongsAdapter(String[] songsArray) {
         this.mSongs = songsArray;
     }
 
     public static class SongViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView songTitle;
+        private TextView songTitle;
 
         public SongViewHolder(View itemView) {
             super(itemView);
-            this.songTitle = (TextView) itemView.findViewById(R.id.song_title);
+            this.songTitle = (TextView) itemView.findViewById(android.R.id.text1);
         }
     }
+
     @Override
     public RecycleSongsAdapter.SongViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_list_song, parent, false);
+                .inflate(android.R.layout.simple_list_item_1, parent, false);
 
         return new SongViewHolder(view);
     }

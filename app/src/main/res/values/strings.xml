@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">RecyclerView Example</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">New Widgets Example</string>
     <string name="action_settings">Settings</string>
+    <string name="text_share">Share</string>
+    <string name="text_open_in_browser">Open in browser</string>
+    <string name="text_delete">Delete</string>
+    <string name="text_add_item">Add item</string>
+    <string name="text_art">art</string>
+    <string name="text_share_text">My favourite album is %1$s by %2$s</string>
+    <string name="text_go_back">go back</string>
 
 </resources>

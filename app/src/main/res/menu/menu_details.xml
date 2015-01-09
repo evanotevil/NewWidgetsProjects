@@ -5,10 +5,10 @@
     <item
         android:id="@+id/action_share"
         android:icon="@drawable/ic_action_social_share"
-        android:title="Share"
+        android:title="@string/text_share"
         app:showAsAction="always"/>
     <item
         android:id="@+id/action_open_in_browser"
-        android:title="Open in browser"
+        android:title="@string/text_open_in_browser"
         app:showAsAction="never"/>
 </menu>

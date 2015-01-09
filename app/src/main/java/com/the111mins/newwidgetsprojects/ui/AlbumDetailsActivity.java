@@ -1,6 +1,5 @@
 package com.the111mins.newwidgetsprojects.ui;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -18,9 +17,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.the111mins.newwidgetsprojects.Const;
 import com.the111mins.newwidgetsprojects.R;
 import com.the111mins.newwidgetsprojects.model.Album;
 import com.the111mins.newwidgetsprojects.ui.adapter.RecycleSongsAdapter;
+import com.the111mins.newwidgetsprojects.utils.DataUtils;
 
 /**
  * Created by klimenko on 15.12.14.
@@ -34,6 +35,45 @@ public class AlbumDetailsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album_details);
 
+        setupToolbar();
+
+        mAlbum = (Album) getIntent().getSerializableExtra(Const.ALBUM_INTENT_EXTRA);
+
+        ImageView albumArt = (ImageView) findViewById(R.id.image_art);
+        albumArt.setImageResource(mAlbum.getAlbumArt());
+        albumArt.setMinimumHeight(albumArt.getWidth());
+
+        final LinearLayout about = (LinearLayout) findViewById(R.id.lyt_about);
+        final TextView albumTitle = (TextView) findViewById(R.id.txt_album_title);
+        albumTitle.setText(mAlbum.getTitle());
+        final TextView artistName = (TextView) findViewById(R.id.txt_album_artist);
+        artistName.setText(mAlbum.getArtistName());
+
+        Palette.generateAsync(((BitmapDrawable) getResources().getDrawable(mAlbum.getAlbumArt())).getBitmap(), new Palette.PaletteAsyncListener() {
+            public void onGenerated(Palette palette) {
+                int vibrantColor = palette.getVibrantColor(0xffffffff);
+                int textTitleColor = palette.getVibrantSwatch().getTitleTextColor();
+                int textColor = palette.getVibrantSwatch().getBodyTextColor();
+
+                about.setBackgroundColor(vibrantColor);
+                albumTitle.setTextColor(textTitleColor);
+                artistName.setTextColor(textColor);
+            }
+        });
+
+        RecyclerView songsRecycleView = (RecyclerView) findViewById(R.id.recycle_view_songs);
+        songsRecycleView.setHasFixedSize(true);
+
+        LinearLayoutManager recycleLayoutManager = new LinearLayoutManager(this);
+        songsRecycleView.setLayoutManager(recycleLayoutManager);
+        songsRecycleView.setItemAnimator(new DefaultItemAnimator());
+
+        RecycleSongsAdapter songsAdapter = new RecycleSongsAdapter(mAlbum.getSongTitles());
+        songsRecycleView.setAdapter(songsAdapter);
+
+    }
+
+    private void setupToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -56,41 +96,6 @@ public class AlbumDetailsActivity extends ActionBarActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("");
         }
-
-        mAlbum = (Album) getIntent().getSerializableExtra("album");
-
-        ImageView albumArt = (ImageView) findViewById(R.id.image_art);
-        albumArt.setImageResource(mAlbum.getAlbumArt());
-        albumArt.setMinimumHeight(albumArt.getWidth());
-
-        final LinearLayout about = (LinearLayout) findViewById(R.id.lyt_about);
-        final TextView albumTitle = (TextView) findViewById(R.id.album_title);
-        albumTitle.setText(mAlbum.getTitle());
-        final TextView artistName = (TextView) findViewById(R.id.album_artist);
-        artistName.setText(mAlbum.getArtistName());
-
-        Palette.generateAsync(((BitmapDrawable) getResources().getDrawable(mAlbum.getAlbumArt())).getBitmap(), new Palette.PaletteAsyncListener() {
-            public void onGenerated(Palette palette) {
-                int vibrantColor = palette.getVibrantColor(0xffffffff);
-                int textTitleColor = palette.getVibrantSwatch().getTitleTextColor();
-                int textColor = palette.getVibrantSwatch().getBodyTextColor();
-
-                about.setBackgroundColor(vibrantColor);
-                albumTitle.setTextColor(textTitleColor);
-                artistName.setTextColor(textColor);
-            }
-        });
-
-        RecyclerView songsRecycleView = (RecyclerView) findViewById(R.id.recycle_view_songs);
-        songsRecycleView.setHasFixedSize(true);
-
-        LinearLayoutManager recycleLayoutManager = new LinearLayoutManager(this);
-        songsRecycleView.setLayoutManager(recycleLayoutManager);
-        songsRecycleView.setItemAnimator(new DefaultItemAnimator());
-
-        RecycleSongsAdapter songsAdapter = new RecycleSongsAdapter(this, mAlbum.getSongTitles());
-        songsRecycleView.setAdapter(songsAdapter);
-
     }
 
     public int getStatusBarHeight() {
@@ -112,13 +117,8 @@ public class AlbumDetailsActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_share) {
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "My favourite album is " + mAlbum.getTitle() + " by " + mAlbum.getArtistName());
-            sendIntent.setType("text/plain");
-            startActivity(sendIntent);
-        } else
-        if (item.getItemId() == R.id.action_open_in_browser) {
+            startActivity(DataUtils.getShareData(AlbumDetailsActivity.this, mAlbum));
+        } else if (item.getItemId() == R.id.action_open_in_browser) {
             //todo
         }
 
